@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestros Servicios - Canopolis Clínica Veterinaria</title>
+    <meta name="description" content="Descubre los 7 servicios veterinarios de Canopolis: Consultas, Cirugías, Diagnóstico, Urgencias 24/7 y más.">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Banner de estado del backend -->
+    <div id="backendBanner" style="display:none; background:#fef3c7; border-bottom:1px solid #f59e0b; padding:10px 24px; text-align:center; font-size:0.88rem; color:#92400e; font-weight:600;">
+        ⚠️ Modo demostración: El servidor backend no está disponible. Algunas funciones pueden no funcionar correctamente.
+    </div>
+
+    <!-- Header/Navbar -->
+    <header id="navbar" class="header">
+       
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo-canopolis.png" alt="Logo Canopolis" class="logo-image">
+                <div class="logo-text">
+                    <strong>Canopolis</strong>
+                    <small>Hospital Veterinario</small>
+                </div>
+            </div>
+            <ul class="nav-menu" id="navLinks">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                <li><a href="servicios.html" class="nav-link active">Servicios</a></li>
+                <li><a href="tienda.html" class="nav-link">🛒 Tienda</a></li>
+                <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+                   <!-- Panel Médico (Solo visible para veterinarios) -->
+                <li id="panelVetNav" style="display: none;">
+                  <a href="veterinario.html" class="nav-link" style="color: var(--clr-primary); font-weight: 700;">
+                     🩺 Panel Médico
+                  </a>
+                </li>
+                <li id="guestNavActions" class="guest-actions">
+                  <a href="javascript:void(0)" class="btn-login" onclick="openModal('loginModal')">👤 Iniciar Sesión</a>
+                  <a href="javascript:void(0)" class="btn-outline" onclick="accederPanelMedico()" style="margin-right: 8px;">🩺 Panel Médico</a>
+                  <a href="#contacto" class="btn-primary">Agendar Cita</a>
+               </li>
+                <li id="userProfileBadge" class="user-badge" style="display: none;">
+                  <button id="btnMisCitas" class="btn-primary" style="padding: 6px 14px; font-size: 0.85rem; margin-right: 8px;" onclick="abrirModalMisCitas()">📅 Mis Citas</button>
+                  <a id="btnHistorialClinico" href="historia-clinica.html" class="btn-outline" style="padding: 6px 14px; font-size: 0.85rem; margin-right: 8px;">📋 Historial Clínico</a>
+                  <div class="user-avatar" id="userAvatar">U</div>
+                  <div class="user-info">
+                      <span id="userName">Usuario</span>
+                      <span id="userRole">CLIENTE</span>
+                  </div>
+                  <a href="javascript:void(0)" onclick="handleLogout()" class="btn-logout">Salir</a>
+              </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <span class="section-tag">🏥 Medicina Veterinaria de Alta Complejidad</span>
+            <h1 class="page-hero-title">Nuestros Servicios</h1>
+            <p class="page-hero-subtitle">
+                Atención clínica integral, diagnóstico de precisión y procedimientos quirúrgicos avanzados 
+                respaldados por tecnología médica de vanguardia y amor por la vida animal.
+            </p>
+        </div>
+    </section>
+
+    <!-- Servicios Detallados -->
+    <section class="services-detailed-section">
+        <div class="about-container">
+            <div class="section-header">
+                <span class="section-tag">CATÁLOGO CLÍNICO</span>
+                <h2 class="section-title">Especialidades y Servicios Médicos</h2>
+                <p class="section-subtitle">
+                    Todo lo que tu mascota necesita para una vida saludable, en un solo lugar
+                </p>
+            </div>
+            
+            <div class="services-detailed-grid">
+                <!-- Servicio 1: Consulta General -->
+                <article class="service-detail-card">
+                    <div class="service-detail-header">
+                        <span class="service-detail-icon">🩺</span>
+                        <div class="service-meta">
+                            <span class="service-badge">Medicina Preventiva</span>
+                            <span class="service-time">⏱️ 30–45 min</span>
+                        </div>
+                    </div>
+                    <h3 class="service-detail-title">Consulta General</h3>
+                    <p class="service-detail-desc">
+                        Evaluación médica exhaustiva y personalizada. Revisamos el estado general de salud, 
+                        control de peso, salud dental, nutrición y prevención para detectar cualquier anomalía 
+                        antes de que avance.
+                    </p>
+                    <div class="service-benefits-wrap">
+                        <span class="benefits-label">Beneficios clave:</span>
+                        <ul class="benefits-list">
+                            <li>Examen físico integral de órganos y sistemas</li>
+                            <li>Registro en historia clínica digital en MySQL</li>
+                            <li>Asesoría nutricional y plan de desparasitación</li>
+                            <li>Detección temprana de patologías crónicas</li>
+                        </ul>
+                    </div>
+                    <div class="service-detail-footer">
+                        <div class="service-price">
+                            <small>Inversión desde:</small>
+                            <strong>$50.000 COP</strong>
+                        </div>
+                        <a href="index.html#contacto" class="btn-primary btn-sm-pad">Agendar Cita</a>
+                    </div>
+                </article>
+
+                <!-- Servicio 2: Vacunación -->
+                <article class="service-detail-card">
+                    <div class="service-detail-header">
+                        <span class="service-detail-icon">💉</span>
+                        <div class="service-meta">
+                            <span class="service-badge">Inmunología</span>
+                            <span class="service-time">⏱️ 20 min</span>
+                        </div>
+                    </div>
+                    <h3 class="service-detail-title">Vacunación y Desparasitación</h3>
+                    <p class="service-detail-desc">
+                        Planes inmunológicos certificados para cachorros, gatitos y mascotas adultas. 
+                        Protege a tu compañero contra enfermedades mortales mediante biológicos de alta 
+                        pureza bajo cadena de frío estricta.
+                    </p>
+                    <div class="service-benefits-wrap">
+                        <span class="benefits-label">Beneficios clave:</span>
+                        <ul class="benefits-list">
+                            <li>Vacunas Séxtuple, Triple Felina, Rabia y Giardia</li>
+                            <li>Control antiparasitario interno y externo</li>
+                            <li>Carnet oficial de vacunación digital y físico</li>
+                            <li>Recordatorios automatizados de revacunación</li>
+                        </ul>
+                    </div>
+                    <div class="service-detail-footer">
+                        <div class="service-price">
+                            <small>Inversión desde:</small>
+                            <strong>$45.000 COP</strong>
+                        </div>
+                        <a href="index.html#contacto" class="btn-primary btn-sm-pad">Agendar Cita</a>
+                    </div>
+                </article>
+
+                <!-- Servicio 3: Diagnóstico por Imagen -->
+                <article class="service-detail-card">
+                    <div class="service-detail-header">
+                        <span class="service-detail-icon">🔬</span>
+                        <div class="service-meta">
+                            <span class="service-badge">Alta Tecnología</span>
+                            <span class="service-time">⏱️ 35–50 min</span>
+                        </div>
+                    </div>
+                    <h3 class="service-detail-title">Diagnóstico por Imagen</h3>
+                    <p class="service-detail-desc">
+                        Rayos X digitales de alta resolución y ecografía Doppler color. Tecnología no 
+                        invasiva que permite obtener diagnósticos claros en minutos, reduciendo la 
+                        exposición y el estrés de la mascota.
+                    </p>
+                    <div class="service-benefits-wrap">
+                        <span class="benefits-label">Beneficios clave:</span>
+                        <ul class="benefits-list">
+                            <li>Radiografías torácicas, óseas y abdominales instantáneas</li>
+                            <li>Ecocardiogramas y ecografías abdominales de alta definición</li>
+                            <li>Visualización de cuerpos extraños y fracturas</li>
+                            <li>Entrega inmediata de informes clínicos digitales</li>
+                        </ul>
+                    </div>
+                    <div class="service-detail-footer">
+                        <div class="service-price">
+                            <small>Inversión desde:</small>
+                            <strong>$90.000 COP</strong>
+                        </div>
+                        <a href="index.html#contacto" class="btn-primary btn-sm-pad">Agendar Cita</a>
+                    </div>
+                </article>
+
+                <!-- Servicio 4: Cirugía -->
+                <article class="service-detail-card">
+                    <div class="service-detail-header">
+                        <span class="service-detail-icon">🏥</span>
+                        <div class="service-meta">
+                            <span class="service-badge">Quirófano Nivel Humano</span>
+                            <span class="service-time">⏱️ Según intervención</span>
+                        </div>
+                    </div>
+                    <h3 class="service-detail-title">Cirugía Especializada</h3>
+                    <p class="service-detail-desc">
+                        Procedimientos quirúrgicos generales, ortopédicos, oncología y esterilizaciones 
+                        en quirófano de flujo laminar con monitoreo anestésico multiparamétrico para 
+                        máxima seguridad vital.
+                    </p>
+                    <div class="service-benefits-wrap">
+                        <span class="benefits-label">Beneficios clave:</span>
+                        <ul class="benefits-list">
+                            <li>Anestesia inhalatoria segura (Isoflurano)</li>
+                            <li>Monitoreo en tiempo real (ECG, capnografía, SpO₂)</li>
+                            <li>Cirugía ortopédica, traumatología y tejidos blandos</li>
+                            <li>Protocolos rigurosos de analgesia y recuperación</li>
+                        </ul>
+                    </div>
+                    <div class="service-detail-footer">
+                        <div class="service-price">
+                            <small>Inversión:</small>
+                            <strong>Valoración previa</strong>
+                        </div>
+                        <a href="index.html#contacto" class="btn-primary btn-sm-pad">Agendar Cita</a>
+                    </div>
+                </article>
+
+                <!-- Servicio 5: Urgencias 24/7 -->
+                <article class="service-detail-card highlight-emergency">
+                    <div class="service-detail-header">
+                        <span class="service-detail-icon">🚨</span>
+                        <div class="service-meta">
+                            <span class="service-badge alert-badge">Guardia Permanente</span>
+                            <span class="service-time">️ Atención Inmediata</span>
+                        </div>
+                    </div>
+                    <h3 class="service-detail-title">Urgencias 24/7</h3>
+                    <p class="service-detail-desc">
+                        Atención médica y soporte vital continuo día y noche, 365 días al año. Equipo 
+                        de médicos y enfermeros en guardia constante para actuar sin demora ante traumas, 
+                        intoxicaciones o paro cardiorrespiratorio.
+                    </p>
+                    <div class="service-benefits-wrap">
+                        <span class="benefits-label">Beneficios clave:</span>
+                        <ul class="benefits-list">
+                            <li>Triage médico prioritario sin requerir cita previa</li>
+                            <li>Unidad de Cuidados Intensivos (UCI) con oxigenoterapia</li>
+                            <li>Banco de sangre y soporte hemodinámico avanzado</li>
+                            <li>Cirugía de urgencia disponible las 24 horas</li>
+                        </ul>
+                    </div>
+                    <div class="service-detail-footer">
+                        <div class="service-price">
+                            <small>Servicio de urgencias:</small>
+                            <strong>Triage 24/7</strong>
+                        </div>
+                        <a href="index.html#contacto" class="btn-primary btn-sm-pad">Agendar Cita</a>
+                    </div>
+                </article>
+
+                <!-- Servicio 6: Estética y Spa -->
+                <article class="service-detail-card">
+                    <div class="service-detail-header">
+                        <span class="service-detail-icon">✂️</span>
+                        <div class="service-meta">
+                            <span class="service-badge">Bienestar & Higiene</span>
+                            <span class="service-time">⏱️ 60–90 min</span>
+                        </div>
+                    </div>
+                    <h3 class="service-detail-title">Estética y Spa</h3>
+                    <p class="service-detail-desc">
+                        Peluquería canina y felina con enfoque dermatológico. Baños con productos 
+                        hipoalergénicos medicados, cortes adaptados a cada estándar de raza y 
+                        tratamientos de relajación sin estrés.
+                    </p>
+                    <div class="service-benefits-wrap">
+                        <span class="benefits-label">Beneficios clave:</span>
+                        <ul class="benefits-list">
+                            <li>Baño con agua tibia ozonizada y secado silencioso</li>
+                            <li>Corte higiénico, perfilado y deslanado profundo</li>
+                            <li>Limpieza ótica, corte de uñas y vaciado de glándulas</li>
+                            <li>Revisión dermatológica preventiva</li>
+                        </ul>
+                    </div>
+                    <div class="service-detail-footer">
+                        <div class="service-price">
+                            <small>Inversión desde:</small>
+                            <strong>$40.000 COP</strong>
+                        </div>
+                        <a href="index.html#contacto" class="btn-primary btn-sm-pad">Agendar Cita</a>
+                    </div>
+                </article>
+
+                <!-- Servicio 7: Laboratorio Clínico -->
+                <article class="service-detail-card">
+                    <div class="service-detail-header">
+                        <span class="service-detail-icon">🧪</span>
+                        <div class="service-meta">
+                            <span class="service-badge">Bioanálisis Propio</span>
+                            <span class="service-time">⏱️ Entrega en 1–2h</span>
+                        </div>
+                    </div>
+                    <h3 class="service-detail-title">Laboratorio Clínico</h3>
+                    <p class="service-detail-desc">
+                        Analizadores hematológicos y bioquímicos automatizados en nuestras propias 
+                        instalaciones para procesar muestras con prontitud y brindar diagnósticos 
+                        exactos en situaciones de consulta o prequirúrgicos.
+                    </p>
+                    <div class="service-benefits-wrap">
+                        <span class="benefits-label">Beneficios clave:</span>
+                        <ul class="benefits-list">
+                            <li>Hemograma completo con recuento plaquetario</li>
+                            <li>Perfiles bioquímicos (función renal, hepática)</li>
+                            <li>Uroanálisis completo y coprológicos</li>
+                            <li>Pruebas rápidas para Parvovirus, Moquillo, Leucemia</li>
+                        </ul>
+                    </div>
+                    <div class="service-detail-footer">
+                        <div class="service-price">
+                            <small>Inversión desde:</small>
+                            <strong>$35.000 COP</strong>
+                        </div>
+                        <a href="index.html#contacto" class="btn-primary btn-sm-pad">Agendar Cita</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="service-cta-banner">
+        <div class="cta-banner-content">
+            <h2>¿Necesitas atención médica para tu mascota hoy?</h2>
+            <p>Nuestros especialistas y quirófanos están listos para brindarle el mejor cuidado.</p>
+            <div class="cta-banner-buttons">
+                <a href="index.html#contacto" class="btn-primary btn-large">📅 Agendar Cita en Línea</a>
+                <a href="contacto.html" class="btn-outline btn-large">📞 Contactar por WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <div class="footer-logo"> Canopolis</div>
+                    <p>
+                        La clínica y hospital veterinario donde tu mascota es tratada con el amor 
+                        incondicional, la ética y el rigor científico que merece.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">📘</a>
+                        <a href="#" class="social-link">📷</a>
+                        <a href="#" class="social-link"></a>
+                        <a href="#" class="social-link">▶️</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5>Navegación</h5>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="servicios.html">Servicios</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contacto</h5>
+                    <ul>
+                        <li>📞 +57 (601) 800-CANOPOLIS</li>
+                        <li>✉️ citas@canopolis.com</li>
+                        <li>📍 Av. Principal de las Mascotas #102</li>
+                        <li>🕐 Lun–Sáb: 7am – 8pm · Urgencias 24/7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Canopolis · Clínica & Hospital Veterinario. Todos los derechos reservados.</p>
+                <p>Desarrollado con arquitectura Spring Boot 3 y MySQL.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay" onclick="closeModalOutside(event, 'loginModal')">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+            <div class="modal-logo">🐾 Canopolis</div>
+            <h3>Iniciar Sesión</h3>
+            <p>Accede al portal médico, historial clínico y gestión MySQL</p>
+            <div class="modal-tabs">
+                <button id="modalTabLogin" class="modal-tab-btn active" onclick="switchModalTab('login')">Iniciar Sesión</button>
+                <button id="modalTabRegister" class="modal-tab-btn" onclick="switchModalTab('register')">Crear Cuenta</button>
+            </div>
+            <button class="demo-fill-btn" onclick="fillDemoCredentials()">⚡ Autocompletar con credenciales demo</button>
+            <div id="loginForm" class="tab-content active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Correo electrónico *</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña *</label>
+                        <div class="pwd-input-wrap">
+                            <input type="password" id="loginPassword" name="password" required>
+                            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('loginPassword')">👁️</button>
+                        </div>
+                    </div>
+                    <div id="authFeedback" class="form-feedback" style="display: none;"></div>
+                    <button type="submit" id="loginSubmitBtn" class="btn-primary full-btn">
+                        Ingresar al Sistema
+                    </button>
+                </form>
+                <p class="modal-footer-text">
+                    ¿No tienes cuenta? <a href="javascript:void(0)" onclick="switchModalTab('register')">Regístrate gratis</a>
+                </p>
+            </div>
+            <div id="registerForm" class="tab-content" style="display: none;">
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="regName">Nombre completo *</label>
+                        <input type="text" id="regName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Correo electrónico *</label>
+                        <input type="email" id="regEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Contraseña *</label>
+                        <div class="pwd-input-wrap">
+                            <input type="password" id="regPassword" name="password" required>
+                            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('regPassword')">️</button>
+                        </div>
+                    </div>
+                    <button type="submit" id="registerSubmitBtn" class="btn-primary full-btn">
+                        Crear Cuenta y Entrar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span class="toast-icon">✅</span>
+            <div class="toast-text">
+                <strong id="toastTitle">¡Éxito!</strong>
+                <p id="toastMessage">Operación completada.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Mis Citas -->
+    <div id="misCitasModal" class="modal-overlay" onclick="closeModalOutside(event, 'misCitasModal')">
+       <div class="modal" style="max-width: 680px;">
+          <button class="modal-close" onclick="closeModal('misCitasModal')">&times;</button>
+          <div class="modal-logo"> Mis Citas Médicas</div>
+             <p>Historial y citas programadas en Canopolis</p>
+             <div id="misCitasContenido" style="margin-top: 20px; max-height: 400px; overflow-y: auto;">
+             <p style="text-align: center; color: var(--clr-gray);">Cargando tus citas...</p>
+           </div>
+       </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+</body>
+</html>

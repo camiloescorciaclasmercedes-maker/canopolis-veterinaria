@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Canopolis Clínica Veterinaria</title>
+    <meta name="description" content="Ponte en contacto con Canopolis Clínica Veterinaria. Horarios, líneas directas, formulario y ubicación.">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Banner de estado del backend -->
+    <div id="backendBanner" style="display:none; background:#fef3c7; border-bottom:1px solid #f59e0b; padding:10px 24px; text-align:center; font-size:0.88rem; color:#92400e; font-weight:600;">
+        ⚠️ Modo demostración: El servidor backend no está disponible. Algunas funciones pueden no funcionar correctamente.
+    </div>
+
+    <!-- Header/Navbar -->
+    <header id="navbar" class="header">
+       
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo-canopolis.png" alt="Logo Canopolis" class="logo-image">
+                <div class="logo-text">
+                    <strong>Canopolis</strong>
+                    <small>Hospital Veterinario</small>
+                </div>
+            </div>
+            <ul class="nav-menu" id="navLinks">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                <li><a href="servicios.html" class="nav-link">Servicios</a></li>
+                <li><a href="tienda.html" class="nav-link">🛒 Tienda</a></li>
+                <li><a href="contacto.html" class="nav-link active">Contacto</a></li>
+                   <!-- Panel Médico (Solo visible para veterinarios) -->
+                <li id="panelVetNav" style="display: none;">
+                  <a href="veterinario.html" class="nav-link" style="color: var(--clr-primary); font-weight: 700;">
+                     🩺 Panel Médico
+                  </a>
+                </li>
+               <li id="guestNavActions" class="guest-actions">
+                  <a href="javascript:void(0)" class="btn-login" onclick="openModal('loginModal')">👤 Iniciar Sesión</a>
+                  <a href="javascript:void(0)" class="btn-outline" onclick="accederPanelMedico()" style="margin-right: 8px;">🩺 Panel Médico</a>
+                  <a href="#contacto" class="btn-primary">Agendar Cita</a>
+               </li>
+              <li id="userProfileBadge" class="user-badge" style="display: none;">
+                  <button id="btnMisCitas" class="btn-primary" style="padding: 6px 14px; font-size: 0.85rem; margin-right: 8px;" onclick="abrirModalMisCitas()">📅 Mis Citas</button>
+                  <a id="btnHistorialClinico" href="historia-clinica.html" class="btn-outline" style="padding: 6px 14px; font-size: 0.85rem; margin-right: 8px;">📋 Historial Clínico</a>
+                  <div class="user-avatar" id="userAvatar">U</div>
+                  <div class="user-info">
+                      <span id="userName">Usuario</span>
+                      <span id="userRole">CLIENTE</span>
+                  </div>
+                  <a href="javascript:void(0)" onclick="handleLogout()" class="btn-logout">Salir</a>
+              </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <span class="section-tag">📍 Canales de Comunicación Inmediata</span>
+            <h1 class="page-hero-title">Contáctanos</h1>
+            <p class="page-hero-subtitle">
+                Estamos aquí para atenderte, resolver tus dudas y cuidar la salud de tu mascota.
+                Comunícate por nuestras líneas directas o déjanos un mensaje.
+            </p>
+        </div>
+    </section>
+
+    <!-- Información de Contacto -->
+    <section class="contact-main-section">
+        <div class="about-container">
+            <div class="section-header">
+                <span class="section-tag">ATENCIÓN AL CLIENTE</span>
+                <h2 class="section-title">Información de la Clínica</h2>
+                <p class="section-subtitle">
+                    Múltiples canales siempre a tu disposición
+                </p>
+            </div>
+
+            <div class="contact-card-list">
+                <!-- Teléfono -->
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">📞</div>
+                    <div class="contact-info-text">
+                        <h4>Líneas Telefónicas Directas</h4>
+                        <p><strong>PBX Principal:</strong> +57 (601) 800-CANOPOLIS</p>
+                        <p><strong>WhatsApp Urgencias:</strong> +57 (300) 800-2266</p>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">✉️</div>
+                    <div class="contact-info-text">
+                        <h4>Correos Electrónicos</h4>
+                        <p><strong>Citas Médicas:</strong> citas@canopolis.com</p>
+                        <p><strong>Atención General:</strong> info@canopolis.com</p>
+                    </div>
+                </div>
+
+                <!-- Ubicación -->
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">📍</div>
+                    <div class="contact-info-text">
+                        <h4>Ubicación de la Sede Central</h4>
+                        <p>Av. Principal de las Mascotas #102, Ciudad</p>
+                        <p class="contact-subtext">Estacionamiento exclusivo para pacientes y rampa de acceso para emergencias.</p>
+                    </div>
+                </div>
+
+                <!-- Horarios -->
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">🕐</div>
+                    <div class="contact-info-text">
+                        <h4>Horarios de Consulta y Servicios</h4>
+                        <p><strong>Lunes a Sábado:</strong> 7:00 am – 8:00 pm</p>
+                        <p><strong>Domingos y Festivos:</strong> 8:00 am – 6:00 pm</p>
+                        <p><strong>Hospitalización y Urgencias:</strong> 24 Horas / 7 Días</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulario de Contacto -->
+    <section class="contact-main-section" id="formulario" style="background: var(--clr-light);">
+        <div class="about-container">
+            <div class="contact-two-columns">
+                <div>
+                    <span class="section-tag">MENSAJE DIRECTO</span>
+                    <h2 class="section-title" style="text-align: left;">Envíanos un Mensaje</h2>
+                    <p class="section-subtitle" style="text-align: left; margin-bottom: 32px;">
+                        ¿Tienes preguntas sobre tratamientos, costos o cirugías? Escríbenos y un asesor médico te responderá.
+                    </p>
+
+                    <form id="contactForm" class="contact-custom-form" onsubmit="handleContactForm(event)">
+                        <div class="form-group">
+                            <label for="contactName">Nombre completo *</label>
+                            <input type="text" id="contactName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Correo electrónico *</label>
+                            <input type="email" id="contactEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">Teléfono / WhatsApp *</label>
+                            <input type="tel" id="contactPhone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Mensaje o Consulta *</label>
+                            <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary full-btn">
+                            ✉️ Enviar Mensaje
+                        </button>
+                        <p class="form-note">
+                            * Respondemos habitualmente en menos de 2 horas en horario laboral.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- Mapa -->
+                <div>
+                    <span class="section-tag">CÓMO LLEGAR</span>
+                    <h2 class="section-title" style="text-align: left;">Nuestra Ubicación</h2>
+                    <p class="section-subtitle" style="text-align: left; margin-bottom: 24px;">
+                        Fácil acceso desde cualquier punto de la ciudad
+                    </p>
+                    <div class="map-wrapper">
+                        <iframe 
+                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.123456789!2d-74.7964!3d10.9639!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ef42a1234567890%3A0x1234567890abcdef!2sBarranquilla%2C%20Atl%C3%A1ntico!5e0!3m2!1ses!2sco!4v1234567890" 
+                          width="100%" 
+                          height="480" 
+                          style="border:0; border-radius: 16px;" 
+                          allowfullscreen="" 
+                          loading="lazy" 
+                          referrerpolicy="no-referrer-when-downgrade"
+                          title="Ubicación Canopolis - Barranquilla">
+                       </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <div class="footer-logo">🐾 Canopolis</div>
+                    <p>
+                        La clínica y hospital veterinario donde tu mascota es tratada con el amor 
+                        incondicional, la ética y el rigor científico que merece.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">📘</a>
+                        <a href="#" class="social-link">📷</a>
+                        <a href="#" class="social-link">💬</a>
+                        <a href="#" class="social-link">▶️</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5>Navegación</h5>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="servicios.html">Servicios</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contacto</h5>
+                    <ul>
+                        <li>📞 +57 (601) 800-CANOPOLIS</li>
+                        <li>✉️ citas@canopolis.com</li>
+                        <li> Av. Principal de las Mascotas #102</li>
+                        <li>🕐 Lun–Sáb: 7am – 8pm · Urgencias 24/7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Canopolis · Clínica & Hospital Veterinario. Todos los derechos reservados.</p>
+                <p>Desarrollado con arquitectura Spring Boot 3 y MySQL.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay" onclick="closeModalOutside(event, 'loginModal')">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+            <div class="modal-logo">🐾 Canopolis</div>
+            <h3>Iniciar Sesión</h3>
+            <p>Accede al portal médico, historial clínico y gestión MySQL</p>
+            <div class="modal-tabs">
+                <button id="modalTabLogin" class="modal-tab-btn active" onclick="switchModalTab('login')">Iniciar Sesión</button>
+                <button id="modalTabRegister" class="modal-tab-btn" onclick="switchModalTab('register')">Crear Cuenta</button>
+            </div>
+            <button class="demo-fill-btn" onclick="fillDemoCredentials()">⚡ Autocompletar con credenciales demo</button>
+            <div id="loginForm" class="tab-content active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Correo electrónico *</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña *</label>
+                        <div class="pwd-input-wrap">
+                            <input type="password" id="loginPassword" name="password" required>
+                            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('loginPassword')">👁️</button>
+                        </div>
+                    </div>
+                    <div id="authFeedback" class="form-feedback" style="display: none;"></div>
+                    <button type="submit" id="loginSubmitBtn" class="btn-primary full-btn">
+                        Ingresar al Sistema
+                    </button>
+                </form>
+                <p class="modal-footer-text">
+                    ¿No tienes cuenta? <a href="javascript:void(0)" onclick="switchModalTab('register')">Regístrate gratis</a>
+                </p>
+            </div>
+            <div id="registerForm" class="tab-content" style="display: none;">
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="regName">Nombre completo *</label>
+                        <input type="text" id="regName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Correo electrónico *</label>
+                        <input type="email" id="regEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Contraseña *</label>
+                        <div class="pwd-input-wrap">
+                            <input type="password" id="regPassword" name="password" required>
+                            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('regPassword')">👁️</button>
+                        </div>
+                    </div>
+                    <button type="submit" id="registerSubmitBtn" class="btn-primary full-btn">
+                        Crear Cuenta y Entrar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span class="toast-icon">✅</span>
+            <div class="toast-text">
+                <strong id="toastTitle">¡Éxito!</strong>
+                <p id="toastMessage">Operación completada.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Mis Citas -->
+    <div id="misCitasModal" class="modal-overlay" onclick="closeModalOutside(event, 'misCitasModal')">
+       <div class="modal" style="max-width: 680px;">
+          <button class="modal-close" onclick="closeModal('misCitasModal')">&times;</button>
+          <div class="modal-logo"> Mis Citas Médicas</div>
+             <p>Historial y citas programadas en Canopolis</p>
+             <div id="misCitasContenido" style="margin-top: 20px; max-height: 400px; overflow-y: auto;">
+             <p style="text-align: center; color: var(--clr-gray);">Cargando tus citas...</p>
+           </div>
+       </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+</body>
+</html>

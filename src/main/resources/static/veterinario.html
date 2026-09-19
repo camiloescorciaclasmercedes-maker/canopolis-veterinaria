@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Veterinario - Canopolis Clínica Veterinaria</title>
+    <meta name="description" content="Panel de Control Médico Veterinario - Canopolis Clínica Veterinaria">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Estilos específicos del Panel Veterinario */
+        .vet-panel-section {
+            padding: 60px 24px;
+            background: #f8fafc;
+        }
+        .vet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .vet-card {
+            background: #fff;
+            border: 1px solid var(--clr-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .vet-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--clr-border);
+        }
+        .vet-card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--clr-primary-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .vet-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--clr-secondary);
+        }
+        .vet-card-subtitle {
+            font-size: 0.85rem;
+            color: var(--clr-gray);
+        }
+        .cita-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .cita-item {
+            padding: 12px;
+            border: 1px solid var(--clr-border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: #fafafa;
+        }
+        .cita-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .cita-mascota {
+            font-weight: 700;
+            color: var(--clr-secondary);
+        }
+        .cita-estado {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .estado-pendiente { background: #fef3c7; color: #92400e; }
+        .estado-confirmada { background: #dbeafe; color: #1e40af; }
+        .estado-atendida { background: #d1fae5; color: #065f46; }
+        .cita-detalles {
+            font-size: 0.88rem;
+            color: var(--clr-gray);
+        }
+        .cita-detalles strong {
+            color: var(--clr-secondary);
+        }
+        .cita-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.82rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-primary-sm {
+            background: var(--clr-primary);
+            color: #fff;
+        }
+        .btn-primary-sm:hover {
+            background: var(--clr-primary-dark);
+        }
+        .btn-outline-sm {
+            background: transparent;
+            color: var(--clr-primary);
+            border: 1.5px solid var(--clr-primary);
+        }
+        .btn-outline-sm:hover {
+            background: var(--clr-primary-light);
+        }
+        .btn-danger-sm {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .btn-danger-sm:hover {
+            background: #fecaca;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--clr-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--clr-primary);
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.88rem;
+            color: var(--clr-gray);
+            margin-top: 4px;
+        }
+        .form-consulta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .form-consulta .full {
+            grid-column: 1 / -1;
+        }
+        @media (max-width: 768px) {
+            .form-consulta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner de estado del backend -->
+    <div id="backendBanner" style="display:none; background:#fef3c7; border-bottom:1px solid #f59e0b; padding:10px 24px; text-align:center; font-size:0.88rem; color:#92400e; font-weight:600;">
+        ️ Modo demostración: El servidor backend no está disponible. Algunas funciones pueden no funcionar correctamente.
+    </div>
+
+    <!-- Header/Navbar -->
+    <header id="navbar" class="header">
+        <div class="header-top">
+            <span> Contacto Médico: +57 (601) 800-CANOPOLIS</span>
+            <span>📍 Canopolis - Sede Quirúrgica y Hospitalaria</span>
+            <span class="status-pill">
+                <span id="dbStatusDot" class="status-dot"></span>
+                <span id="dbStatusText">Verificando...</span>
+            </span>
+        </div>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo-canopolis.png" alt="Logo Canopolis" class="logo-image">
+                <div class="logo-text">
+                    <strong>Canopolis</strong>
+                    <small>Hospital Veterinario</small>
+                </div>
+            </div>
+            <ul class="nav-menu" id="navLinks">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                <li><a href="servicios.html" class="nav-link">Servicios</a></li>
+                <li><a href="tienda.html" class="nav-link"> Tienda</a></li>
+                <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+                <li id="panelVetNav"><a href="veterinario.html" class="nav-link active" style="color: var(--clr-primary); font-weight: 700;">🩺 Panel Médico</a></li>
+                <li id="userProfileBadge" class="user-badge" style="display: flex;">
+                    <div class="user-avatar" id="userAvatar">V</div>
+                    <div class="user-info">
+                        <span id="userName">Dr. David García</span>
+                        <span id="userRole">VETERINARIO</span>
+                    </div>
+                    <a href="javascript:void(0)" onclick="handleLogout(); window.location.href='index.html';" class="btn-logout">Salir</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Panel Veterinario -->
+    <section class="vet-panel-section">
+        <div class="about-container">
+            <!-- Header del Panel -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 30px;">
+                <div>
+                    <span class="section-tag">Ficha SENA 3407693 · Fase 3</span>
+                    <h1 style="font-family: var(--font-head); font-size: 2.2rem; color: var(--clr-secondary); margin-top: 6px;">
+                        Panel de Consulta y Citas Asignadas
+                    </h1>
+                    <p style="color: var(--clr-gray); font-size: 1.05rem;">
+                        Bienvenido, <strong id="vetGreetingName">Dr. David García</strong>. Consulta pacientes programados, asignaciones y atención médica.
+                    </p>
+                </div>
+                <div>
+                    <a href="tienda.html#inventario" class="btn-secondary" style="padding: 10px 18px; font-size: 0.9rem; margin-right: 8px;">
+                        📦 Ir a Inventario
+                    </a>
+                    <button class="btn-primary" onclick="abrirModalNuevaConsulta()" style="padding: 10px 18px; font-size: 0.9rem;">
+                        ➕ Nueva Consulta
+                    </button>
+                </div>
+            </div>
+
+            <!-- Estadísticas Rápidas -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="statCitasHoy">0</span>
+                    <span class="stat-label">Citas Hoy</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="statPendientes">0</span>
+                    <span class="stat-label">Pendientes</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="statAtendidas">0</span>
+                    <span class="stat-label">Atendidas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="statTotalMascotas">0</span>
+                    <span class="stat-label">Mascotas Registradas</span>
+                </div>
+            </div>
+
+            <!-- Citas Asignadas al Veterinario -->
+            <div class="vet-card">
+                <div class="vet-card-header">
+                    <div class="vet-card-icon">📅</div>
+                    <div>
+                        <div class="vet-card-title">Citas Asignadas</div>
+                        <div class="vet-card-subtitle">Pacientes programados para tu atención</div>
+                    </div>
+                </div>
+                <div id="citasVeterinarioContenido">
+                    <p style="text-align: center; color: var(--clr-gray); padding: 20px;">Cargando citas asignadas...</p>
+                </div>
+            </div>
+
+            <!-- Citas Pendientes Sin Asignar -->
+            <div class="vet-card" style="margin-top: 24px;">
+                <div class="vet-card-header">
+                    <div class="vet-card-icon" style="background: #fef3c7;">⏳</div>
+                    <div>
+                        <div class="vet-card-title">Citas Pendientes de Asignación</div>
+                        <div class="vet-card-subtitle">Solicitudes que requieren asignación de veterinario</div>
+                    </div>
+                </div>
+                <div id="citasPendientesContenido">
+                    <p style="text-align: center; color: var(--clr-gray); padding: 20px;">Cargando citas pendientes...</p>
+                </div>
+            </div>
+
+            <!-- Historias Clínicas Recientes -->
+            <div class="vet-card" style="margin-top: 24px;">
+                <div class="vet-card-header">
+                    <div class="vet-card-icon" style="background: #d1fae5;">📋</div>
+                    <div>
+                        <div class="vet-card-title">Historias Clínicas Recientes</div>
+                        <div class="vet-card-subtitle">Últimas consultas médicas registradas</div>
+                    </div>
+                </div>
+                <div id="historiasRecientesContenido">
+                    <p style="text-align: center; color: var(--clr-gray); padding: 20px;">Cargando historias clínicas...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Nueva Consulta -->
+    <div id="modalNuevaConsulta" class="modal-overlay" onclick="closeModalOutside(event, 'modalNuevaConsulta')">
+        <div class="modal" style="max-width: 720px; max-height: 90vh; overflow-y: auto;">
+            <button class="modal-close" onclick="closeModal('modalNuevaConsulta')">&times;</button>
+            <div class="modal-logo"> Registrar Consulta Médica</div>
+            <p>Complete los datos de la atención veterinaria</p>
+            
+            <form id="formNuevaConsulta" class="form-consulta" onsubmit="registrarNuevaConsulta(event)">
+                <div class="form-group">
+                    <label for="consultaMascotaId">Mascota *</label>
+                    <select id="consultaMascotaId" required>
+                        <option value="">Seleccionar mascota...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="consultaCitaId">Cita asociada (opcional)</label>
+                    <select id="consultaCitaId">
+                        <option value="">Sin cita previa</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label for="consultaMotivo">Motivo de la consulta *</label>
+                    <input type="text" id="consultaMotivo" required>
+                </div>
+                <div class="form-group full">
+                    <label for="consultaSintomas">Síntomas reportados</label>
+                    <textarea id="consultaSintomas" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="consultaPeso">Peso (kg) *</label>
+                    <input type="number" id="consultaPeso" step="0.1" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="consultaTemperatura">Temperatura (°C)</label>
+                    <input type="text" id="consultaTemperatura" placeholder="38.5">
+                </div>
+                <div class="form-group full">
+                    <label for="consultaDiagnostico">Diagnóstico *</label>
+                    <textarea id="consultaDiagnostico" rows="2" required></textarea>
+                </div>
+                <div class="form-group full">
+                    <label for="consultaTratamiento">Tratamiento *</label>
+                    <textarea id="consultaTratamiento" rows="2" required></textarea>
+                </div>
+                <div class="form-group full">
+                    <label for="consultaMedicamentos">Medicamentos recetados</label>
+                    <textarea id="consultaMedicamentos" rows="2" placeholder="Nombre, dosis y frecuencia"></textarea>
+                </div>
+                <div class="form-group full">
+                    <label for="consultaRecomendaciones">Recomendaciones</label>
+                    <textarea id="consultaRecomendaciones" rows="2"></textarea>
+                </div>
+                <div class="form-group full">
+                    <label for="consultaObservaciones">Observaciones adicionales</label>
+                    <textarea id="consultaObservaciones" rows="2"></textarea>
+                </div>
+                <div class="full" style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button type="submit" class="btn-primary"> Guardar Consulta</button>
+                    <button type="button" class="btn-outline" onclick="closeModal('modalNuevaConsulta')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <div class="footer-logo">🐾 Canopolis</div>
+                    <p>
+                        La clínica y hospital veterinario donde tu mascota es tratada con el amor 
+                        incondicional, la ética y el rigor científico que merece.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"></a>
+                        <a href="#" class="social-link">📷</a>
+                        <a href="#" class="social-link">💬</a>
+                        <a href="#" class="social-link">▶️</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5>Panel Médico</h5>
+                    <ul>
+                        <li><a href="veterinario.html">Citas asignadas</a></li>
+                        <li><a href="tienda.html#inventario">Inventario</a></li>
+                        <li><a href="index.html">Inicio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contacto</h5>
+                    <ul>
+                        <li>📞 +57 (601) 800-CANOPOLIS</li>
+                        <li>✉️ citas@canopolis.com</li>
+                        <li> Av. Principal de las Mascotas #102</li>
+                        <li>🕐 Lun–Sáb: 7am – 8pm · Urgencias 24/7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Canopolis · Clínica & Hospital Veterinario. Todos los derechos reservados.</p>
+                <p>Desarrollado con arquitectura Spring Boot 3 y MySQL.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span class="toast-icon">✅</span>
+            <div class="toast-text">
+                <strong id="toastTitle">¡Éxito!</strong>
+                <p id="toastMessage">Operación completada.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script>
+        // Funciones específicas del Panel Veterinario
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarCitasVeterinario();
+            cargarCitasPendientes();
+            cargarEstadisticas();
+        });
+
+        async function cargarCitasVeterinario() {
+            const vetId = localStorage.getItem('vetId') || 2; // ID del veterinario demo
+            const contenedor = document.getElementById('citasVeterinarioContenido');
+            
+            try {
+                const res = await fetch(`/api/citas/veterinario/${vetId}`);
+                if (!res.ok) throw new Error('Error al cargar citas');
+                
+                const citas = await res.json();
+                
+                if (citas.length === 0) {
+                    contenedor.innerHTML = '<p style="text-align: center; color: var(--clr-gray); padding: 20px;">No tienes citas asignadas.</p>';
+                    return;
+                }
+                
+                let html = '<ul class="cita-list">';
+                citas.forEach(cita => {
+                    const estadoClass = `estado-${cita.estado.toLowerCase()}`;
+                    html += `
+                        <li class="cita-item">
+                            <div class="cita-item-header">
+                                <span class="cita-mascota">🐾 ${cita.mascota.nombre} (${cita.mascota.especie})</span>
+                                <span class="cita-estado ${estadoClass}">${cita.estado}</span>
+                            </div>
+                            <div class="cita-detalles">
+                                <strong>Servicio:</strong> ${cita.servicio}<br>
+                                <strong>Fecha:</strong> ${cita.fecha} a las ${cita.hora}<br>
+                                <strong>Motivo:</strong> ${cita.motivo || 'No especificado'}
+                            </div>
+                            <div class="cita-actions">
+                                ${cita.estado === 'PENDIENTE' || cita.estado === 'CONFIRMADA' ? `
+                                    <button class="btn-sm btn-primary-sm" onclick="atenderCita(${cita.id})">✓ Atender</button>
+                                    <button class="btn-sm btn-outline-sm" onclick="verHistoriaClinica(${cita.mascota.id})">📋 Historia</button>
+                                ` : ''}
+                                ${cita.estado === 'CANCELADA' ? '<em style="color: #991b1b;">Cita cancelada</em>' : ''}
+                            </div>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+                contenedor.innerHTML = html;
+            } catch (err) {
+                contenedor.innerHTML = '<p style="text-align: center; color: #991b1b; padding: 20px;">Error al cargar citas. Verifica la conexión con el backend.</p>';
+            }
+        }
+
+        async function cargarCitasPendientes() {
+            const contenedor = document.getElementById('citasPendientesContenido');
+            
+            try {
+                const res = await fetch('/api/citas/estado/PENDIENTE');
+                if (!res.ok) throw new Error('Error al cargar citas pendientes');
+                
+                const citas = await res.json();
+                
+                if (citas.length === 0) {
+                    contenedor.innerHTML = '<p style="text-align: center; color: var(--clr-gray); padding: 20px;">No hay citas pendientes de asignación.</p>';
+                    return;
+                }
+                
+                let html = '<ul class="cita-list">';
+                citas.forEach(cita => {
+                    html += `
+                        <li class="cita-item">
+                            <div class="cita-item-header">
+                                <span class="cita-mascota">🐾 ${cita.mascota.nombre} (${cita.mascota.especie})</span>
+                                <span class="cita-estado estado-pendiente">PENDIENTE</span>
+                            </div>
+                            <div class="cita-detalles">
+                                <strong>Servicio:</strong> ${cita.servicio}<br>
+                                <strong>Fecha:</strong> ${cita.fecha} a las ${cita.hora}<br>
+                                <strong>Motivo:</strong> ${cita.motivo || 'No especificado'}
+                            </div>
+                            <div class="cita-actions">
+                                <button class="btn-sm btn-primary-sm" onclick="asignarCita(${cita.id})">Asignar a mi agenda</button>
+                            </div>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+                contenedor.innerHTML = html;
+            } catch (err) {
+                contenedor.innerHTML = '<p style="text-align: center; color: #991b1b; padding: 20px;">Error al cargar citas pendientes.</p>';
+            }
+        }
+
+        async function cargarEstadisticas() {
+            try {
+                const vetId = localStorage.getItem('vetId') || 2;
+                
+                // Citas de hoy
+                const hoy = new Date().toISOString().split('T')[0];
+                const resHoy = await fetch(`/api/citas/veterinario/${vetId}`);
+                const citasHoy = await resHoy.json();
+                const citasHoyCount = citasHoy.filter(c => c.fecha === hoy).length;
+                document.getElementById('statCitasHoy').textContent = citasHoyCount;
+                
+                // Pendientes
+                const resPend = await fetch('/api/citas/estado/PENDIENTE');
+                const pendientes = await resPend.json();
+                document.getElementById('statPendientes').textContent = pendientes.length;
+                
+                // Atendidas
+                const resAtend = await fetch('/api/citas/estado/ATENDIDA');
+                const atendidas = await resAtend.json();
+                document.getElementById('statAtendidas').textContent = atendidas.length;
+                
+                // Total mascotas
+                const resMasc = await fetch('/api/mascotas');
+                const mascotas = await resMasc.json();
+                document.getElementById('statTotalMascotas').textContent = mascotas.length;
+            } catch (err) {
+                console.error('Error al cargar estadísticas:', err);
+            }
+        }
+
+        async function atenderCita(citaId) {
+            if (!confirm('¿Confirmar que atendiste esta cita?')) return;
+            
+            try {
+                const res = await fetch(`/api/citas/${citaId}/atender`, { method: 'PUT' });
+                if (res.ok) {
+                    showToast('Cita Atendida', 'La cita ha sido marcada como atendida.');
+                    cargarCitasVeterinario();
+                    cargarEstadisticas();
+                } else {
+                    showToast('Error', 'No se pudo actualizar la cita.', 'error');
+                }
+            } catch (err) {
+                showToast('Error', 'Error de conexión con el backend.', 'error');
+            }
+        }
+
+        async function asignarCita(citaId) {
+            const vetId = localStorage.getItem('vetId') || 2;
+            
+            try {
+                const res = await fetch(`/api/citas/${citaId}/asignar-veterinario/${vetId}`, { method: 'PUT' });
+                if (res.ok) {
+                    showToast('Cita Asignada', 'La cita ha sido asignada a tu agenda.');
+                    cargarCitasVeterinario();
+                    cargarCitasPendientes();
+                    cargarEstadisticas();
+                } else {
+                    showToast('Error', 'No se pudo asignar la cita.', 'error');
+                }
+            } catch (err) {
+                showToast('Error', 'Error de conexión con el backend.', 'error');
+            }
+        }
+
+        function verHistoriaClinica(mascotaId) {
+            window.location.href = `historia-clinica.html?mascotaId=${mascotaId}`;
+        }
+
+        function abrirModalNuevaConsulta() {
+            // Cargar mascotas en el select
+            cargarMascotasEnSelect();
+            document.getElementById('modalNuevaConsulta').style.display = 'flex';
+        }
+
+        async function cargarMascotasEnSelect() {
+            const select = document.getElementById('consultaMascotaId');
+            try {
+                const res = await fetch('/api/mascotas');
+                const mascotas = await res.json();
+                select.innerHTML = '<option value="">Seleccionar mascota...</option>';
+                mascotas.forEach(m => {
+                    select.innerHTML += `<option value="${m.id}">${m.nombre} (${m.especie} - ${m.propietario.nombre})</option>`;
+                });
+            } catch (err) {
+                console.error('Error al cargar mascotas:', err);
+            }
+        }
+
+        async function registrarNuevaConsulta(event) {
+            event.preventDefault();
+            
+            const payload = {
+                mascotaId: document.getElementById('consultaMascotaId').value,
+                citaId: document.getElementById('consultaCitaId').value || null,
+                motivo: document.getElementById('consultaMotivo').value,
+                sintomas: document.getElementById('consultaSintomas').value,
+                peso: parseFloat(document.getElementById('consultaPeso').value),
+                temperatura: document.getElementById('consultaTemperatura').value,
+                diagnostico: document.getElementById('consultaDiagnostico').value,
+                tratamiento: document.getElementById('consultaTratamiento').value,
+                medicamentos: document.getElementById('consultaMedicamentos').value,
+                recomendaciones: document.getElementById('consultaRecomendaciones').value,
+                observaciones: document.getElementById('consultaObservaciones').value,
+                veterinarioId: localStorage.getItem('vetId') || 2
+            };
+            
+            try {
+                const res = await fetch('/api/historias-clinicas/consultas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) {
+                    showToast('Consulta Registrada', 'La consulta médica ha sido guardada exitosamente.');
+                    closeModal('modalNuevaConsulta');
+                    document.getElementById('formNuevaConsulta').reset();
+                    cargarCitasVeterinario();
+                    cargarEstadisticas();
+                } else {
+                    const data = await res.json();
+                    showToast('Error', data.mensaje || 'No se pudo registrar la consulta.', 'error');
+                }
+            } catch (err) {
+                showToast('Error', 'Error de conexión con el backend.', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
